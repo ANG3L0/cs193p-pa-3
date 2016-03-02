@@ -10,8 +10,10 @@ Now that we’ve added an MVC Model to our Calculator, we’re going to push its
 3. [ ] Your UI should always be in sync with your Model (the CalculatorBrain).
 4. [ ] The extra credit item from last week to turn displayValue into a Double? (i.e, an Optional rather than a Double) is now required. displayValue should return nil whenever the contents of the display cannot be interpreted as a Double. Setting displayValue to nil should clear the display.
 5. [ ] Add the capability to your CalculatorBrain to allow the pushing of variables onto its internal stack. Do so by implementing the following API in your CalculatorBrain ...
+
       `func pushOperand(symbol: String) -> Double?`
       `var variableValues: Dictionary<String,Double>`
+
 These must do exactly what you would imagine they would: the first pushes a “variable” onto your brain’s internal stack (e.g. pushOperand(“x”) would push a variable named x) and the second lets users of the CalculatorBrain set the value for any variable they wish (e.g. brain.variableValues[“x”] = 35.0). pushOperand should return the result of evaluate() after having pushed the variable (just like the other pushOperand does).
 6. [ ] The evaluate() function should use a variable’s value (from the variableValues dictionary) whenever a variable is encountered or return nil if it encounters a variable with no corresponding value.
 7. [ ] Implement a new read-only (get only, no set) var to CalculatorBrain to describe the contents of the brain as a String ...
