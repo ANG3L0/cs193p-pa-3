@@ -12,24 +12,35 @@ Now that we’ve added an MVC Model to our Calculator, we’re going to push its
 5. [ ] Add the capability to your CalculatorBrain to allow the pushing of variables onto its internal stack. Do so by implementing the following API in your CalculatorBrain ...
 
       `func pushOperand(symbol: String) -> Double?`
+
       `var variableValues: Dictionary<String,Double>`
 
 These must do exactly what you would imagine they would: the first pushes a “variable” onto your brain’s internal stack (e.g. pushOperand(“x”) would push a variable named x) and the second lets users of the CalculatorBrain set the value for any variable they wish (e.g. brain.variableValues[“x”] = 35.0). pushOperand should return the result of evaluate() after having pushed the variable (just like the other pushOperand does).
+
 6. [ ] The evaluate() function should use a variable’s value (from the variableValues dictionary) whenever a variable is encountered or return nil if it encounters a variable with no corresponding value.
-7. [ ] Implement a new read-only (get only, no set) var to CalculatorBrain to describe the contents of the brain as a String ...
+
+7. [ ] Implement a new read-only (`get` only, no `set`) var to CalculatorBrain to describe the contents of the brain as a `String` ...
+
       `var description: String`
+
   * [ ] Unary operations should be shown using “function” notation. For example, the
 input `10 cos` would display in the description as `cos(10)`.
   * [ ] Binary operations should be shown using “infix” notation. For example, the input
-3 ↲ 5 - should display as 3-5. Be sure to get the order correct!
+`3 ↲ 5 -` should display as `3-5`. Be sure to get the order correct!
   * [ ]  All other stack contents (e.g. operands, variables, constants like π, etc.) should be displayed unadorned. For example, 23.5 ⇒ 23.5, π ⇒ π (not 3.1415!), the variable x ⇒ x (not its value!), etc.
   * [ ]  Any combination of stack elements should be properly displayed. Examples:
-10 √ 3 +⇒√(10)+3
- 3 ↲ 5 + √ ⇒ √(3+5)
-3 ↲ 5 ↲ 4 + + ⇒3+(5+4)or (for Extra Credit)3+5+4 3 ↲ 5 √ + √ 6 ÷ ⇒ √(3+ √(5))÷6
-  * [ ] If there are any missing operands, substitute a ? for them, e.g. 3 ↲ + ⇒ ?+3.
-  * [ ] If there are multiple complete expressions on the stack, separate them by commas: for example, 3 ↲ 5 + √ π cos ⇒ √(3+5),cos(π). The expressions should be in historical order with the oldest at the beginning of the string and the most recently pushed/performed at the end.
-  * [ ] Your description must properly convey the mathematical expression. For example, 3 ↲ 5 ↲ 4 + * must not output 3*5+4—it must be 3*(5+4). In other words, you will need to sometimes add parentheses around binary operations. Having said that, try to minimize parentheses as much as you can (as long as the output is mathematically correct). See Extra Credit if you want to really do this well.
+
+`10 √ 3 + ⇒ √(10)+3`
+
+`3 ↲ 5 + √ ⇒ √(3+5)`
+
+`3 ↲ 5 ↲ 4 + + ⇒ 3+(5+4)` or (for Extra Credit) `3+5+4`
+
+`3 ↲ 5 √ + √ 6 ÷ ⇒ √(3+ √(5))÷6`
+
+  * [ ] If there are any missing operands, substitute a ? for them, e.g. `3 ↲ + ⇒ ?+3`.
+  * [ ] If there are multiple complete expressions on the stack, separate them by commas: for example, `3 ↲ 5 + √ π cos ⇒ √(3+5),cos(π)`. The expressions should be in historical order with the oldest at the beginning of the string and the most recently pushed/performed at the end.
+  * [ ] Your description must properly convey the mathematical expression. For example, `3 ↲ 5 ↲ 4 + *` must not output `3*5+4`—it must be `3*(5+4)`. In other words, you will need to sometimes add parentheses around binary operations. Having said that, try to minimize parentheses as much as you can (as long as the output is mathematically correct). See Extra Credit if you want to really do this well.
 8. [ ] Modify the UILabel you added last week to show your CalculatorBrain’s description instead. It should put an = on the end of it (and be positioned strategically so that the display looks like it’s the result of that =). This = was Extra Credit last week, but it is required this week.
 9. [ ] Add two new buttons to your Calculator’s keypad: →M and M. These 2 buttons will set and get (respectively) a variable in the CalculatorBrain called M.
   * [ ] →M sets the value of the variable M in the brain to the current value of the display (if any)
