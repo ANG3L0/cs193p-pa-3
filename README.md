@@ -30,17 +30,19 @@ input `10 cos` would display in the description as `cos(10)`.
   * [ ]  All other stack contents (e.g. operands, variables, constants like π, etc.) should be displayed unadorned. For example, 23.5 ⇒ 23.5, π ⇒ π (not 3.1415!), the variable x ⇒ x (not its value!), etc.
   * [ ]  Any combination of stack elements should be properly displayed. Examples:
 
-`10 √ 3 + ⇒ √(10)+3`
+  `10 √ 3 + ⇒ √(10)+3`
+  
+  `3 ↲ 5 + √ ⇒ √(3+5)`
+  
+  `3 ↲ 5 ↲ 4 + + ⇒ 3+(5+4)` or (for Extra Credit) `3+5+4`
+  
+  `3 ↲ 5 √ + √ 6 ÷ ⇒ √(3+ √(5))÷6`
 
-`3 ↲ 5 + √ ⇒ √(3+5)`
+    * [ ] If there are any missing operands, substitute a ? for them, e.g. `3 ↲ + ⇒ ?+3`.
+    * [ ] If there are multiple complete expressions on the stack, separate them by commas: for example, `3 ↲ 5 + √ π cos ⇒ √(3+5),cos(π)`. The expressions should be in historical order with the oldest at the beginning of the string and the most recently pushed/performed at the end.
+    * [ ] Your description must properly convey the mathematical expression. For example, `3 ↲ 5 ↲ 4 + *` must not output `3*5+4`—it must be `3*(5+4)`. In other words, you will need to sometimes add parentheses around binary operations. Having said that, try to minimize parentheses as much as you can (as long as the output is mathematically correct). See Extra Credit if you want to really do this well.
 
-`3 ↲ 5 ↲ 4 + + ⇒ 3+(5+4)` or (for Extra Credit) `3+5+4`
 
-`3 ↲ 5 √ + √ 6 ÷ ⇒ √(3+ √(5))÷6`
-
-  * [ ] If there are any missing operands, substitute a ? for them, e.g. `3 ↲ + ⇒ ?+3`.
-  * [ ] If there are multiple complete expressions on the stack, separate them by commas: for example, `3 ↲ 5 + √ π cos ⇒ √(3+5),cos(π)`. The expressions should be in historical order with the oldest at the beginning of the string and the most recently pushed/performed at the end.
-  * [ ] Your description must properly convey the mathematical expression. For example, `3 ↲ 5 ↲ 4 + *` must not output `3*5+4`—it must be `3*(5+4)`. In other words, you will need to sometimes add parentheses around binary operations. Having said that, try to minimize parentheses as much as you can (as long as the output is mathematically correct). See Extra Credit if you want to really do this well.
 8. [ ] Modify the UILabel you added last week to show your CalculatorBrain’s description instead. It should put an = on the end of it (and be positioned strategically so that the display looks like it’s the result of that =). This = was Extra Credit last week, but it is required this week.
 9. [ ] Add two new buttons to your Calculator’s keypad: →M and M. These 2 buttons will set and get (respectively) a variable in the CalculatorBrain called M.
   * [ ] →M sets the value of the variable M in the brain to the current value of the display (if any)
@@ -51,13 +53,28 @@ evaluate()) in the display
   * [ ] →M and M are Controller mechanics, not Model mechanics (though they both use
 the Model mechanic of variables).
   * [ ] This is not a very great “memory” button on our Calculator, but it’s good for testing whether our variable function implemented above is working properly. Examples ...
-7 M + √ ⇒ description is √(7+M), display is blank because M is not set
-9 →M ⇒ display now shows 4 (the square root of 16), description is still √(7+M) 14 + ⇒ display now shows 18, description is now √(7+M)+14
+
+  `7 M + √` ⇒ description is `√(7+M)`, display is blank because M is not set
+  `9 →M` ⇒ display now shows 4 (the square root of 16), description is still `√(7+M)`
+  `14 +` ⇒ display now shows 18, description is now `√(7+M)+14`
 10. [ ] Make sure your C button from Assignment 1 works properly in this assignment.
 11. [ ] When you touch the C button, the M variable should be removed from the variableValues Dictionary in the CalculatorBrain (not set to zero or any other value). This will allow you to test the case of an “unset” variable (because it will make evaluate() return nil and thus your Calculator’s display will be empty if M is ever used without a →M).
 12. [ ] Your UI should look good on any size iPhone in both portrait and landscape (don’t worry about iPad until next week). This means setting up Autolayout properly, nothing more. 
 
+## Pain points for this assignment AKA "stuff to learn"
+1. Optionals
+2. Closures
+3. enum
+4. switch
+5. Dictionary
+6. Tuples
+7. Autolayout
+8. Recursion (not really an iOS thing, but something you should know!)
+
 ## Extra Credit
+ Make your description have as few parentheses as possible for binary operations.
+2. Add Undo to your Calculator. In Assignment 1’s Extra Credit, you might have added “backspace”. Here we’re talking about combining both backspace and actual undo into a single button. If the user is in the middle of entering a number, this Undo button should be backspace. When the user is not in the middle of entering a number, it should undo the last thing that was done in the CalculatorBrain.
+3. Add a new method, evaluateAndReportErrors(). It should work like evaluate() except that if there is a problem of any kind evaluating the stack (not just unset variables or missing operands, but also divide by zero, square root of a negative number, etc.), instead of returning nil, it will return a String with what the problem is (if there are multiple problems, you can simply return any one of them you wish). Report any such errors in the display of your calculator (instead of just making it blank or showing some weird value). You must still implement evaluate() as specified in the Required Tasks above, but, if you want, you can have evaluate() return nil if there are any errors (not just in the “unset variable” or “not enough operands” case). The push and perform methods should still return Double? (which is kind of a wasted evaluation, but we want to be able to evaluate your Extra Credit separate from the Required Tasks).
 
 ## Evaluation
 
