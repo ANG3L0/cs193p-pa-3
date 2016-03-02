@@ -1,49 +1,55 @@
-# cs193p-pa1
+# cs193p-pa2
 
+## Objective
+You will start this assignment by enhancing your Assignment 1 Calculator to include the changes made in lecture (i.e. CalculatorBrain, etc.). This is the last assignment for which you will have to replicate code from lecture by typing it in.
+Now that we’ve added an MVC Model to our Calculator, we’re going to push its capabilities a bit further. You will enhance your Calculator to allow the input of a “variable” into the Calculator’s stack. In addition, you’ll provide a way for the user to better see what has been entered so far.
 
 ## Main tasks
-
-1. [x] Get the Calculator working as demonstrated in lectures 1 and 2. The Autolayout portion at the end of the lecture is extra credit, but give it a try because getting good at autolayout requires experience. If you do not do autolayout, be sure to position everything so that it is visible on all iPhones (i.e. the upper left corner of the scene).
-2. [x] Your calculator already works with floating point numbers (e.g. if you touch 3 ↲ 4 ÷, it will properly show 0.75), however, there is no way for the user to enter a floating point number directly. Fix this by allowing legal floating point numbers to be entered (e.g. “192.168.0.1” is not a legal floating point number!). You will have to add a new “.” button to your Calculator. Don’t worry too much about precision or significant digits in this assignment.
-3. [x] Add the following operations to your Calculator:
-  * [x] sin: calculates the sine of the top operand on the stack
-  * [x] cos: calculates the cosine of the top operand on the stack
-  * [x] π: calculates (well, conjures up) the value of π. For example, 3 π × should put three times the value of π into the display on your calculator. Ditto 3 ↲ π x and also π 3 ×.
-4. [X] Add a UILabel to your UI which shows a history of every operand and operation input by the user. Place it at an appropriate location in your UI.
-5. [X] Add a C button that clears everything (your display, the new UILabel you added above, etc.). The Calculator should be in the same state as it is at application startup after you touch this new button.
-6. [X] Avoid the problems listed in the Evaluation section below. This list grows as the quarter progresses, so be sure to check it again with each assignment. 
+1. [ ] All of the changes to the Calculator made in lecture must be applied to your Assignment 1. Get this fully functioning before proceeding to the rest of the Required Tasks. And, as last week, type the changes in, do not copy/paste from anywhere.
+2. [ ] Do not change any non-private API in CalculatorBrain and continue to use an enum as its primary internal data structure.
+3. [ ] Your UI should always be in sync with your Model (the CalculatorBrain).
+4. [ ] The extra credit item from last week to turn displayValue into a Double? (i.e, an Optional rather than a Double) is now required. displayValue should return nil whenever the contents of the display cannot be interpreted as a Double. Setting displayValue to nil should clear the display.
+5. [ ] Add the capability to your CalculatorBrain to allow the pushing of variables onto its internal stack. Do so by implementing the following API in your CalculatorBrain ...
+      `func pushOperand(symbol: String) -> Double?`
+      `var variableValues: Dictionary<String,Double>`
+These must do exactly what you would imagine they would: the first pushes a “variable” onto your brain’s internal stack (e.g. pushOperand(“x”) would push a variable named x) and the second lets users of the CalculatorBrain set the value for any variable they wish (e.g. brain.variableValues[“x”] = 35.0). pushOperand should return the result of evaluate() after having pushed the variable (just like the other pushOperand does).
+6. [ ] The evaluate() function should use a variable’s value (from the variableValues dictionary) whenever a variable is encountered or return nil if it encounters a variable with no corresponding value.
+7. [ ] Implement a new read-only (get only, no set) var to CalculatorBrain to describe the contents of the brain as a String ...
+      `var description: String`
+  * [ ] Unary operations should be shown using “function” notation. For example, the
+input `10 cos` would display in the description as `cos(10)`.
+  * [ ] Binary operations should be shown using “infix” notation. For example, the input
+3 ↲ 5 - should display as 3-5. Be sure to get the order correct!
+  * [ ]  All other stack contents (e.g. operands, variables, constants like π, etc.) should be displayed unadorned. For example, 23.5 ⇒ 23.5, π ⇒ π (not 3.1415!), the variable x ⇒ x (not its value!), etc.
+  * [ ]  Any combination of stack elements should be properly displayed. Examples:
+10 √ 3 +⇒√(10)+3
+ 3 ↲ 5 + √ ⇒ √(3+5)
+3 ↲ 5 ↲ 4 + + ⇒3+(5+4)or (for Extra Credit)3+5+4 3 ↲ 5 √ + √ 6 ÷ ⇒ √(3+ √(5))÷6
+  * [ ] If there are any missing operands, substitute a ? for them, e.g. 3 ↲ + ⇒ ?+3.
+  * [ ] If there are multiple complete expressions on the stack, separate them by commas: for example, 3 ↲ 5 + √ π cos ⇒ √(3+5),cos(π). The expressions should be in historical order with the oldest at the beginning of the string and the most recently pushed/performed at the end.
+  * [ ] Your description must properly convey the mathematical expression. For example, 3 ↲ 5 ↲ 4 + * must not output 3*5+4—it must be 3*(5+4). In other words, you will need to sometimes add parentheses around binary operations. Having said that, try to minimize parentheses as much as you can (as long as the output is mathematically correct). See Extra Credit if you want to really do this well.
+8. [ ] Modify the UILabel you added last week to show your CalculatorBrain’s description instead. It should put an = on the end of it (and be positioned strategically so that the display looks like it’s the result of that =). This = was Extra Credit last week, but it is required this week.
+9. [ ] Add two new buttons to your Calculator’s keypad: →M and M. These 2 buttons will set and get (respectively) a variable in the CalculatorBrain called M.
+  * [ ] →M sets the value of the variable M in the brain to the current value of the display (if any)
+  * [ ] →M should not perform an automatic ↲ (though it should reset “user is in the middle of typing a number”)
+  * [ ] Touching M should push an M variable (not the value of M) onto the CalculatorBrain
+  * [ ] Touching either button should show the evaluation of the brain (i.e. the result of
+evaluate()) in the display
+  * [ ] →M and M are Controller mechanics, not Model mechanics (though they both use
+the Model mechanic of variables).
+  * [ ] This is not a very great “memory” button on our Calculator, but it’s good for testing whether our variable function implemented above is working properly. Examples ...
+7 M + √ ⇒ description is √(7+M), display is blank because M is not set
+9 →M ⇒ display now shows 4 (the square root of 16), description is still √(7+M) 14 + ⇒ display now shows 18, description is now √(7+M)+14
+10. [ ] Make sure your C button from Assignment 1 works properly in this assignment.
+11. [ ] When you touch the C button, the M variable should be removed from the variableValues Dictionary in the CalculatorBrain (not set to zero or any other value). This will allow you to test the case of an “unset” variable (because it will make evaluate() return nil and thus your Calculator’s display will be empty if M is ever used without a →M).
+12. [ ] Your UI should look good on any size iPhone in both portrait and landscape (don’t worry about iPad until next week). This means setting up Autolayout properly, nothing more. 
 
 ## Extra Credit
-1. [x] Implement a “backspace” button for the user to touch if they hit the wrong digit button. This is not intended to be “undo,” so if the user hits the wrong operation button, he or she is out of luck! It is up to you to decide how to handle the case where the user backspaces away the entire number they are in the middle of typing, but having the display go completely blank is probably not very user-friendly.
-You might find the global functions countElements and dropLast to be a great help with this. Both can take a String as their only argument. The first one is what you would generally think of as “length” and the other drops the last character from the String (and returns the result of doing so). You might be kind of weirded out if you alt-click on these functions. The types of the arguments and return values would require some significant explanation which there is not room for here but, in short, String is actually a collection of characters that can be indexed into and sliced into sub-collections of characters. That is why countElements (which takes a collection) and dropLast (which takes a sliceable thing) work on String.
-2. [x] When the user hits an operation button, put an = on the end of the UILabel you added in the Required Task above. Thus the user will be able to tell whether the number in the Calculator’s display is the result of a calculation or a number that the user has just entered. Don’t end up with multiple occurrences of = in your UILabel.
-3. [x] Add a ᐩ/- operation which changes the sign of the number in the display. Be careful with this one. If the user is in the middle of entering a number, you probably want to change the sign of that number and allow typing to continue, not force an enter like other operations do. On the other hand, if the user is not in the middle of typing a number, then this operation would work just like any other unary operation (e.g. cos).
-4. [x] Change the computed instance variable displayValue to be an Optional Double rather than a Double. Its value should be nil if the contents of display.text cannot be interpreted as a Double (you’ll need to use the documentation to understand the NSNumberFormatter code). Setting its value to nil should clear the display out.
-5. [x] Use Autolayout to make your calculator look good on all different kinds of iPhones in both Portrait and Landscape orientations (don’t worry about iPads for now). Just like we used ctrl-drag to the edges of our scene to position display, you can you ctrl-drag between your UILabels (and/or your C button) to fix their vertical/horizontal spacing relative to each other. Use the blue gridlines! It’s probably a good idea to reset all of your autolayout (via the button in lower right corner), then use ctrl-drag to add constraints to things that are not part of the grid of keypad and operation buttons, then use the buttons in the lower right to lay out those (after you’ve moved them in to place relative to your UILabel(s), etc., using dashed blue lines, of course!).
 
 ## Evaluation
-In all of the assignments this quarter, writing quality code that builds without warnings or errors, and then testing the resulting application and iterating until it functions properly is the goal.
-Here are the most common reasons assignments are marked down:  
-
-* Project does not build.
-* Project does not build without warnings.
-* One or more items in the Required Tasks section was not satisfied.
-* A fundamental concept was not understood.
-* Code is visually sloppy and hard to read (e.g. indentation is not consistent, etc.).
-* Your solution is difficult (or impossible) for someone reading the code to understand due to lack of comments, poor variable/method names, poor solution structure, long methods, etc.  
-
-Often students ask “how much commenting of my code do I need to do?” The answer is that your code must be easily and completely understandable by anyone reading it. You can assume that the reader knows the SDK, but should not assume that they already know the (or a) solution to the problem.
 
 #Demos and so forth
-Long video of me walking through all the boring features (plus, minus, subtract, sin, cosine, pie, square root, backspace, floating point entry, plus/minus, displaying history of operands/operations).  Also shows the case where the buttons dynamic changes sizes when operation history grows too big.
-![Video Walkthrough](basic_rotate.gif)
-
-The second walkthrough is on a different platform (iPad Air 2 instead of iPhone to show that auto-layout works).  In addition I attempt to put more than one floating-point at a time, try to square-root a negative number (calculator does not support imaginary numbers).  I also delete stuff up to the decimal "6." and the calculator would still interpret it as "6.0".
-![Video Walkthrough](cornercase_rotate.gif)
+TBD
 
 ##What could be better?
-  * My auto-layout is actually kind of screwed up (by one pixel), but I cannot figure out where the pixel differential is because there are too many space constraints, so I said "screw it, who cares about one pixel?"
-  * Secondly, lower precision would be nice--a sin of PI is 0, but the calculator says it is 1.22e-16.  The "E-16" portion is actually covered up when you have a small screen and looking at it vertically--definitely something that could be improved upon.
-  * Lastly, even though displayValue can handle an "N/A" or some bad input (you just clear it and start over)--there's no clear spec as to whether or not the calculator ought to freeze when we run into a nan or some input that just does not work.  Though it is mentioned that this will ultimately be handled in the later assignments.
-  * The divide op in the walkthrough has a spacing error--this has been fixed but I am too lazy to re-record.
-
+TBD
