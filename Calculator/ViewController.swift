@@ -16,10 +16,10 @@ class ViewController: UIViewController {
     let errmsg = "N/A (please clear)"
     var userIsInTheMiddleOfTypingANumber = false
     var brain = CalculatorBrain()
-    var freeze = false
+//    var freeze = false
 
     @IBAction func appendDigit(sender: UIButton) {
-        if freeze { return }
+//        if freeze { return }
         let digit = sender.currentTitle!
         let dupDecimal = decimalDupCheck(inputDigit: digit, stringToCheck: display.text)
         if userIsInTheMiddleOfTypingANumber {
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func valueManip(sender: UIButton) {
-        if freeze { return }
+//        if freeze { return }
         let manipulator = sender.currentTitle!
         switch manipulator {
         case "⌫":
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
                 } else {
                     updateDispVal(manipulator)
                     appendDispEquals()
-                    opHistory.text = brain.printOpHistory()
+                    opHistory.text = brain.description
                 }
             }
             
@@ -73,23 +73,25 @@ class ViewController: UIViewController {
     }
     
     @IBAction func operate(sender: UIButton) {
-        
-        if userIsInTheMiddleOfTypingANumber {
-            enter() //add to stack if say "6 enter 3 times"
-        }
         if let operation = sender.currentTitle {
-            if freeze && operation != "C" { return }
+            if userIsInTheMiddleOfTypingANumber && operation != "→M"{
+                enter() //add to stack if say "6 enter 3 times"
+            }
+            if operation == "→M" {
+                brain.variableValues["M"] = displayValue
+            }
+            if operation == "M" {
+                brain.pushOperand(operation)
+                userIsInTheMiddleOfTypingANumber = false
+            }
+            
             updateDispVal(operation)
-            if operation != "π" && operation != "C" {
+            
+            if operation != "π" && operation != "C"{
                 appendDispEquals()
             }
         }
-        opHistory.text = brain.printOpHistory()
-//        case "C":
-//            resetCalc()
-//            freeze = false
-//            displayValue = 0
-        //        }
+        opHistory.text = brain.description
         
 
     }
@@ -98,7 +100,7 @@ class ViewController: UIViewController {
     
     
     @IBAction func enter() {
-        if freeze { return }
+//        if freeze { return }
         userIsInTheMiddleOfTypingANumber = false
         if let result = brain.pushOperand(displayValue) {
             displayValue = result
@@ -118,7 +120,7 @@ class ViewController: UIViewController {
                 //special case of PI and the spec to clear the display if N/A
                 if (display.text! != "π") {
                     display.text = errmsg
-                    freeze = true
+//                    freeze = true
                     resetCalc()
                     return 0
                 }
@@ -129,7 +131,7 @@ class ViewController: UIViewController {
             if let num = newValue {
                 display.text = num == M_PI ? "π" : "\(num)"
             } else {
-                display.text = "N/A"
+                display.text = " "
             }
             
             userIsInTheMiddleOfTypingANumber = false

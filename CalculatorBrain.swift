@@ -16,6 +16,7 @@ class CalculatorBrain {
         case BinaryOperation(String, (Double, Double) -> Double)
         case ClearOperation(String)
         case PiOperation(String)
+        case Variable(String)
         
         var description: String {
             get {
@@ -30,16 +31,18 @@ class CalculatorBrain {
                     return symbol
                 case .PiOperation(let symbol):
                     return symbol
+                case .Variable(let symbol):
+                    return symbol
                 }
             }
         }
     }
     
-    var opHistory = ""
-    
     private var opStack = [Op]()
     
     private var knownOps = [String:Op]()
+    
+    var variableValues = [String:Double]()
     
     init() {
         func learnOp(op: Op) {
@@ -55,6 +58,7 @@ class CalculatorBrain {
         learnOp(Op.UnaryOperation("ᐩ/-", -))
         learnOp(Op.ClearOperation("C"))
         learnOp(Op.PiOperation("π"))
+//        learnOp(Op.Variable("x="))
     }
     
     //pass back and forth the program operation stack
@@ -79,47 +83,88 @@ class CalculatorBrain {
         }
     }
     
-    private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op], opHistory: String) {
+    var description: String {
+        var describeString: [String] = []
+        var described = describe(opStack)
+
+        if let firstDescriptor = described.descriptor {
+            describeString.append(firstDescriptor)
+        }
+        while !described.remainingOps.isEmpty {
+            described = describe(described.remainingOps)
+            if let anotherDescriptor = described.descriptor {
+                describeString.append(anotherDescriptor)
+            }
+        }
+        return describeString.reverse().joinWithSeparator(",") ?? " "
+    }
+    
+    private func describe(ops: [Op]) -> (remainingOps: [Op], descriptor: String?) {
+        if !ops.isEmpty{
+            var remainingOps = ops
+            let op = remainingOps.removeLast()
+            switch op {
+            case .Variable(let symbol):
+                return (remainingOps, symbol)
+            case .Operand(let operand):
+                return (remainingOps, "\(operand)")
+            case .UnaryOperation(let symbol, _):
+                let described = describe(remainingOps)
+                return (described.remainingOps, "\(symbol)(\(described.descriptor ?? "?"))")
+            case .BinaryOperation(let symbol, _):
+                let op1Described = describe(remainingOps)
+                let op2Described = describe(op1Described.remainingOps)
+                var binaryDescription: String
+                binaryDescription = "(\(op2Described.descriptor ?? "?") \(symbol) \(op1Described.descriptor ?? "?"))"
+                return (op2Described.remainingOps, binaryDescription)
+            case .ClearOperation(_):
+                return (ops, nil)
+            case .PiOperation(_):
+                return (remainingOps, "π")
+            }
+        }
+        return (ops, nil)
+    }
+    
+    private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {
         if !ops.isEmpty {
             var remainingOps = ops
             let op = remainingOps.removeLast()
             switch op {
+            case .Variable(let operand):
+                if let variableValue = variableValues[operand] {
+                    return (variableValue, remainingOps)
+                }
+                return (nil, remainingOps)
             case .Operand(let operand):
-                return (operand, remainingOps, "\(operand)")
-            case .UnaryOperation(let symbol, let operation):
+                return (operand, remainingOps)
+            case .UnaryOperation(_, let operation):
                 let operandEvaluation = evaluate(remainingOps)
                 if let operand = operandEvaluation.result {
-                    opHistory = "\(symbol)(\(operandEvaluation.opHistory))"
-                    return (operation(operand), operandEvaluation.remainingOps, opHistory)
+                    return (operation(operand), operandEvaluation.remainingOps)
                 }
-            case .BinaryOperation(let symbol, let operation):
+            case .BinaryOperation(_, let operation):
                 let op1Evaluation = evaluate(remainingOps)
                 if let operand1 = op1Evaluation.result {
                     let op2Evaluation = evaluate(op1Evaluation.remainingOps)
                     if let operand2 = op2Evaluation.result {
                         print("op1: \(operand1); op2: \(operand2)")
-                        if symbol == "-" || symbol == "÷" {
-                            opHistory = "(\(op2Evaluation.opHistory) \(symbol) \(operand1))"
-                        } else {
-                            opHistory = "(\(operand1) \(symbol) \(op2Evaluation.opHistory))"
-                        }
-
-                        return (operation(operand1, operand2), op2Evaluation.remainingOps, opHistory)
+                        return (operation(operand1, operand2), op2Evaluation.remainingOps)
                     }
                 }
             case .ClearOperation(_):
                 opStack = []
-                opHistory = ""
-                return (0, [], opHistory)
+                variableValues = [:]
+                return (0, [])
             case .PiOperation(_):
-                return (M_PI, remainingOps, "π") //no .removeLast() since we need to wait for an operation to operate on pi
+                return (M_PI, remainingOps) //no .removeLast() since we need to wait for an operation to operate on pi
             }
         }
-        return (nil, ops, "")
+        return (nil, ops)
     }
     
     func evaluate() -> Double? {
-        let (result, remainder, _) = evaluate(opStack)
+        let (result, remainder) = evaluate(opStack)
         print("\(opStack) = \(result) with \(remainder) left over")
         return result
     }
@@ -131,15 +176,16 @@ class CalculatorBrain {
         return evaluate()
     }
     
+    func pushOperand(variableSymbol: String) -> Double? {
+        opStack.append(Op.Variable(variableSymbol))
+        return evaluate()
+    }
+    
     func performOperation(symbol: String) -> Double? {
         if let operation = knownOps[symbol] {
             opStack.append(operation)
         }
         return evaluate()
-    }
-    
-    func printOpHistory() -> String {
-        return opHistory
     }
     
 }
