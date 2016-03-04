@@ -36,6 +36,24 @@ class CalculatorBrain {
                 }
             }
         }
+        
+        var precedence: Int {
+            switch self {
+            case .BinaryOperation(let symbol, _):
+                switch symbol {
+                case "+": fallthrough
+                case "-":
+                    return 0
+                case "×": fallthrough
+                case "÷":
+                    return 1
+                default:
+                    return Int.max
+                }
+            default:
+                return Int.max
+            }
+        }
     }
     
     private var opStack = [Op]()
@@ -84,6 +102,10 @@ class CalculatorBrain {
     }
     
     var description: String {
+        //recursion stack for some N number of ops in the describeString array
+        //can terminate without exploring the entire array
+        //Ex: [A,B,C,D,E] -> CDE gets returned to top level and terminates.
+        //Solution: Loop through the array until all elements are processed.
         var describeString: [String] = []
         var described = describe(opStack)
 
@@ -99,31 +121,46 @@ class CalculatorBrain {
         return describeString.reverse().joinWithSeparator(",") ?? " "
     }
     
-    private func describe(ops: [Op]) -> (remainingOps: [Op], descriptor: String?) {
+    private func describe(ops: [Op]) -> (remainingOps: [Op], descriptor: String?, prevOp: Op?) {
         if !ops.isEmpty{
             var remainingOps = ops
             let op = remainingOps.removeLast()
             switch op {
             case .Variable(let symbol):
-                return (remainingOps, symbol)
+                return (remainingOps, symbol, op)
             case .Operand(let operand):
-                return (remainingOps, "\(operand)")
+                return (remainingOps, "\(operand)", op)
             case .UnaryOperation(let symbol, _):
                 let described = describe(remainingOps)
-                return (described.remainingOps, "\(symbol)(\(described.descriptor ?? "?"))")
+                let retStr = op.precedence > described.prevOp?.precedence ?
+                    "\(symbol)(\(described.descriptor ?? "?"))" :
+                    "\(symbol)\(described.descriptor ?? "?")"
+                return (described.remainingOps, retStr, op)
             case .BinaryOperation(let symbol, _):
                 let op1Described = describe(remainingOps)
                 let op2Described = describe(op1Described.remainingOps)
                 var binaryDescription: String
-                binaryDescription = "(\(op2Described.descriptor ?? "?") \(symbol) \(op1Described.descriptor ?? "?"))"
-                return (op2Described.remainingOps, binaryDescription)
+                var prefix: String
+                var suffix: String
+                if op.precedence > op2Described.prevOp?.precedence {
+                    prefix = "(\(op2Described.descriptor ?? "?"))"
+                } else {
+                    prefix = "\(op2Described.descriptor ?? "?")"
+                }
+                if op.precedence > op1Described.prevOp?.precedence {
+                    suffix = "(\(op1Described.descriptor ?? "?"))"
+                } else {
+                    suffix = "\(op1Described.descriptor ?? "?")"
+                }
+                binaryDescription = "\(prefix)\(symbol)\(suffix)"
+                return (op2Described.remainingOps, binaryDescription, op)
             case .ClearOperation(_):
-                return (ops, nil)
+                return (ops, nil, op)
             case .PiOperation(_):
-                return (remainingOps, "π")
+                return (remainingOps, "π", op)
             }
         }
-        return (ops, nil)
+        return (ops, nil, nil)
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {
@@ -186,6 +223,10 @@ class CalculatorBrain {
             opStack.append(operation)
         }
         return evaluate()
+    }
+    
+    func opStackRemoveLast() {
+        opStack.removeLast()
     }
     
 }

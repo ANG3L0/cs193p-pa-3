@@ -59,7 +59,7 @@ the Model mechanic of variables).
   `14 +` ⇒ display now shows 18, description is now `√(7+M)+14`
 10. [x] Make sure your C button from Assignment 1 works properly in this assignment.
 11. [x] When you touch the C button, the M variable should be removed from the variableValues Dictionary in the CalculatorBrain (not set to zero or any other value). This will allow you to test the case of an “unset” variable (because it will make evaluate() return nil and thus your Calculator’s display will be empty if M is ever used without a →M).
-12. [ ] Your UI should look good on any size iPhone in both portrait and landscape (don’t worry about iPad until next week). This means setting up Autolayout properly, nothing more. 
+12. [x] Your UI should look good on any size iPhone in both portrait and landscape (don’t worry about iPad until next week). This means setting up Autolayout properly, nothing more. 
 
 ## Pain points for this assignment AKA "stuff to learn"
 1. Optionals
@@ -68,16 +68,16 @@ the Model mechanic of variables).
 4. switch
 5. Dictionary
 6. Tuples
-7. Autolayout
+7. Autolayout -- this can go fuck itself.
 8. Recursion (not really an iOS thing, but something you should know!)
 
 ## Extra Credit
-1. Make your description have as few parentheses as possible for binary operations.
-2. Add Undo to your Calculator. In Assignment 1’s Extra Credit, you might have added “backspace”. Here we’re talking about combining both backspace and actual undo into a single button. If the user is in the middle of entering a number, this Undo button should be backspace. When the user is not in the middle of entering a number, it should undo the last thing that was done in the CalculatorBrain.
-3. Add a new method, evaluateAndReportErrors(). It should work like evaluate() except that if there is a problem of any kind evaluating the stack (not just unset variables or missing operands, but also divide by zero, square root of a negative number, etc.), instead of returning nil, it will return a String with what the problem is (if there are multiple problems, you can simply return any one of them you wish). Report any such errors in the display of your calculator (instead of just making it blank or showing some weird value). You must still implement evaluate() as specified in the Required Tasks above, but, if you want, you can have evaluate() return nil if there are any errors (not just in the “unset variable” or “not enough operands” case). The push and perform methods should still return Double? (which is kind of a wasted evaluation, but we want to be able to evaluate your Extra Credit separate from the Required Tasks).
+1. [x] Make your description have as few parentheses as possible for binary operations.
+2. [x] Add Undo to your Calculator. In Assignment 1’s Extra Credit, you might have added “backspace”. Here we’re talking about combining both backspace and actual undo into a single button. If the user is in the middle of entering a number, this Undo button should be backspace. When the user is not in the middle of entering a number, it should undo the last thing that was done in the CalculatorBrain.
+3. [ ] Add a new method, evaluateAndReportErrors(). It should work like evaluate() except that if there is a problem of any kind evaluating the stack (not just unset variables or missing operands, but also divide by zero, square root of a negative number, etc.), instead of returning nil, it will return a String with what the problem is (if there are multiple problems, you can simply return any one of them you wish). Report any such errors in the display of your calculator (instead of just making it blank or showing some weird value). You must still implement evaluate() as specified in the Required Tasks above, but, if you want, you can have evaluate() return nil if there are any errors (not just in the “unset variable” or “not enough operands” case). The push and perform methods should still return Double? (which is kind of a wasted evaluation, but we want to be able to evaluate your Extra Credit separate from the Required Tasks).
 
 ##Demos and so forth
 TBD
 
 ##What could be better?
-TBD
+My ability to not crawl up in a corner and cry when using auto-layout.

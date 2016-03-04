@@ -44,12 +44,23 @@ class ViewController: UIViewController {
         let manipulator = sender.currentTitle!
         switch manipulator {
         case "⌫":
-            delDispLastChar()
-            if display.text!.isEmpty {
-                display.text! = "0"
-                userIsInTheMiddleOfTypingANumber = false //erased to 0, don't want to have "03" in display
+            if userIsInTheMiddleOfTypingANumber {
+                delDispLastChar()
+                if display.text!.isEmpty {
+                    display.text! = "0"
+                    userIsInTheMiddleOfTypingANumber = false //erased to 0, don't want to have "03" in display
+                } else {
+                    userIsInTheMiddleOfTypingANumber = true
+                }
             } else {
-                userIsInTheMiddleOfTypingANumber = true
+                //undo case when user is not typing
+                brain.opStackRemoveLast()
+                if let result = brain.evaluate() {
+                    displayValue = result
+                } else {
+                    displayValue = nil
+                }
+                opHistory.text = brain.description
             }
         case "ᐩ/-":
             let startIdx = display.text!.startIndex
