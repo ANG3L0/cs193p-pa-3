@@ -79,16 +79,21 @@ the Model mechanic of variables).
 ##Demos and so forth
 Four walkthroughs so it isn't one big gif...
 
-First walkthrough shows the vanilla assignment.  I set variables and display formulas properly.  Basically follows the spec outlined in the main tasks section.  Probably some of the extra credit stuff is accidentally covered here as well, but is not very highlighted.
+First walkthrough shows the vanilla assignment.  I set variables and display formulas properly.  Basically follows the spec outlined in the main tasks section.  Probably some of the extra credit stuff is accidentally covered here as well, but is not emphasized.
+
 ![Video Walkthrough](main_tasks.gif)
 
+
 Next walkthrough shows undo functionality.  If you are typing a number, "undo" just erases stuff; if you screwed up an operation and want to do something else, "undo" will revert the operation and basically let you go back in time to recalculate whatever you want.
+
 ![Video Walkthrough](extra_credit_undo.gif)
 
 Third gif shows the four errors: divide by 0, square root of a negative number, not enough operands, and variable M not being set.
+
 ![Video Walkthrough](extra_credit_errors.gif)
 
 Last walkthrough highlights minimal parenthesis.  The special case I talk about in the "What could be better?" section is shown here.  I also do an unnecessarily contrived and large operation to show how robust the minimalistic parenthesis is.  Even for unary operations, parentheticals are not used unless absolutely necessary (e.g. to disambiguate `√5 + √3` versus `√(5+√3)`.  Thus, a unary operator without a parenthesis is operating on just the operand right next to it.
+
 ![Video Walkthrough](extra_credit_paren.gif)
 
 ##What could be better?
