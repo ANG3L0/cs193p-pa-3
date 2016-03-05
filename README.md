@@ -80,4 +80,20 @@ the Model mechanic of variables).
 TBD
 
 ##What could be better?
-My ability to not crawl up in a corner and cry when using auto-layout.
+  * My ability to not crawl up in a corner and cry when using auto-layout.
+  * Behavior where you merge 2 separate stacks together is a bit tricky and not discussed at all in the assignment, if you had say:
+    `(1+2+3)x4,4/5` and then you merge them with a multiply, everything is cool:
+
+    `(1+2+3)x4x4/5`; however, merge them with a divide and you will get a mismatch:
+
+    `(1+2+3)x4/4/5` will be on the history display, while the DFS algorithm will calculate:
+
+    `(1+2+3)x4/(4/5)`
+
+    Here, the precedence of divide and the preceding operator (multiply) and the succeeding operator (divide) are the same.  But the merging of two stacks implies there is a strict implicit parenthesis, but only for operations where order matters.  That is to say, the display would get confused in merging a "-" to a bunch of "+/-" and merging a "/" with a bunch of "*/-" by the nature of the description on how the extra credit should be done.
+
+    Question: Why wouldn't merging "/" by confused by "+/-"?
+    Answer: I leave this as a thought exercise for the reader.
+    Real Answer: The conflict only arises when you are merging things with the same precedence, since you would assume there would be no parenthesis (e.g. 1+2-3 or 2/3*4 would have no parenethesis).  Merging a divide with a plus, or a minus with a multiply will give you the parenthesis for free since they are the of different precedence.
+    Question 2: Why not have divides and multiply be of different precedence?
+    Answer: The common case like 1*2/4*3/5 or some continuous stream of multiply and divides would get screwed up.

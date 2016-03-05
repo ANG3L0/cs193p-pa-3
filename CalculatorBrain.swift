@@ -107,13 +107,13 @@ class CalculatorBrain {
         //Ex: [A,B,C,D,E] -> CDE gets returned to top level and terminates.
         //Solution: Loop through the array until all elements are processed.
         var describeString: [String] = []
-        var described = describe(opStack)
+        var described = describe(opStack, TOS: true)
 
         if let firstDescriptor = described.descriptor {
             describeString.append(firstDescriptor)
         }
         while !described.remainingOps.isEmpty {
-            described = describe(described.remainingOps)
+            described = describe(described.remainingOps, TOS: true)
             if let anotherDescriptor = described.descriptor {
                 describeString.append(anotherDescriptor)
             }
@@ -121,7 +121,7 @@ class CalculatorBrain {
         return describeString.reverse().joinWithSeparator(",") ?? " "
     }
     
-    private func describe(ops: [Op]) -> (remainingOps: [Op], descriptor: String?, prevOp: Op?) {
+    private func describe(ops: [Op], TOS: Bool) -> (remainingOps: [Op], descriptor: String?, prevOp: Op?) {
         if !ops.isEmpty{
             var remainingOps = ops
             let op = remainingOps.removeLast()
@@ -131,26 +131,47 @@ class CalculatorBrain {
             case .Operand(let operand):
                 return (remainingOps, "\(operand)", op)
             case .UnaryOperation(let symbol, _):
-                let described = describe(remainingOps)
+                let described = describe(remainingOps, TOS: false)
                 let retStr = op.precedence > described.prevOp?.precedence ?
                     "\(symbol)(\(described.descriptor ?? "?"))" :
                     "\(symbol)\(described.descriptor ?? "?")"
                 return (described.remainingOps, retStr, op)
             case .BinaryOperation(let symbol, _):
-                let op1Described = describe(remainingOps)
-                let op2Described = describe(op1Described.remainingOps)
+                let op1Described = describe(remainingOps, TOS: false)
+                let op2Described = describe(op1Described.remainingOps, TOS: false)
                 var binaryDescription: String
                 var prefix: String
                 var suffix: String
-                if op.precedence > op2Described.prevOp?.precedence {
+                let opPrecedence = op.precedence
+                let op1Precedence = op1Described.prevOp?.precedence
+                let op2Precedence = op2Described.prevOp?.precedence
+                if opPrecedence > op2Precedence {
                     prefix = "(\(op2Described.descriptor ?? "?"))"
                 } else {
                     prefix = "\(op2Described.descriptor ?? "?")"
                 }
-                if op.precedence > op1Described.prevOp?.precedence {
+                if opPrecedence > op1Precedence {
                     suffix = "(\(op1Described.descriptor ?? "?"))"
-                } else {
+                } else if opPrecedence < op1Precedence {
                     suffix = "\(op1Described.descriptor ?? "?")"
+                } else {
+                    //if top of stack, we are merging 2 operands: e.g.:
+                    //(1+2+3)*4, 4/5
+                    //Without this condition, this would show as:
+                    //(1+2+3)*4/4/5 instead of:
+                    //(1+2+3)*4/(4/5)--both stacks have same precedence, but merging them implies
+                    //an implicit parenthesis, but only for operations where order matters.
+                    //That's to say in prev example:
+                    //(1+2+3)*4*4/5 is completely OK.
+                    if !TOS {
+                        suffix = "\(op1Described.descriptor ?? "?")"
+                    } else {
+                        if symbol == "-" || symbol == "÷" {
+                            suffix = "(\(op1Described.descriptor ?? "?"))"
+                        } else {
+                            suffix = "\(op1Described.descriptor ?? "?")"
+                        }
+                    }
                 }
                 binaryDescription = "\(prefix)\(symbol)\(suffix)"
                 return (op2Described.remainingOps, binaryDescription, op)
@@ -201,6 +222,12 @@ class CalculatorBrain {
     }
     
     func evaluate() -> Double? {
+        let (result, remainder) = evaluate(opStack)
+        print("\(opStack) = \(result) with \(remainder) left over")
+        return result
+    }
+
+    func evaluateAndReportErrors() -> Double? {
         let (result, remainder) = evaluate(opStack)
         print("\(opStack) = \(result) with \(remainder) left over")
         return result
