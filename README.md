@@ -77,7 +77,19 @@ the Model mechanic of variables).
 3. [x] Add a new method, evaluateAndReportErrors(). It should work like evaluate() except that if there is a problem of any kind evaluating the stack (not just unset variables or missing operands, but also divide by zero, square root of a negative number, etc.), instead of returning nil, it will return a String with what the problem is (if there are multiple problems, you can simply return any one of them you wish). Report any such errors in the display of your calculator (instead of just making it blank or showing some weird value). You must still implement evaluate() as specified in the Required Tasks above, but, if you want, you can have evaluate() return nil if there are any errors (not just in the “unset variable” or “not enough operands” case). The push and perform methods should still return Double? (which is kind of a wasted evaluation, but we want to be able to evaluate your Extra Credit separate from the Required Tasks).
 
 ##Demos and so forth
-TBD
+Four walkthroughs so it isn't one big gif...
+
+First walkthrough shows the vanilla assignment.  I set variables and display formulas properly.  Basically follows the spec outlined in the main tasks section.  Probably some of the extra credit stuff is accidentally covered here as well, but is not very highlighted.
+![Video Walkthrough](main_tasks.gif)
+
+Next walkthrough shows undo functionality.  If you are typing a number, "undo" just erases stuff; if you screwed up an operation and want to do something else, "undo" will revert the operation and basically let you go back in time to recalculate whatever you want.
+![Video Walkthrough](extra_credit_undo.gif)
+
+Third gif shows the four errors: divide by 0, square root of a negative number, not enough operands, and variable M not being set.
+![Video Walkthrough](extra_credit_errors.gif)
+
+Last walkthrough highlights minimal parenthesis.  The special case I talk about in the "What could be better?" section is shown here.  I also do an unnecessarily contrived and large operation to show how robust the minimalistic parenthesis is.  Even for unary operations, parentheticals are not used unless absolutely necessary (e.g. to disambiguate `√5 + √3` versus `√(5+√3)`.  Thus, a unary operator without a parenthesis is operating on just the operand right next to it.
+![Video Walkthrough](extra_credit_paren.gif)
 
 ##What could be better?
   * My ability to not crawl up in a corner and cry when using auto-layout.
