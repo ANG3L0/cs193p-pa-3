@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel! //implicit unwrapped optional
     @IBOutlet weak var opHistory: UILabel!
     
-    let errmsg = "N/A (please clear)"
     var userIsInTheMiddleOfTypingANumber = false
     var brain = CalculatorBrain()
 //    var freeze = false
@@ -90,14 +89,13 @@ class ViewController: UIViewController {
             }
             if operation == "→M" {
                 brain.variableValues["M"] = displayValue
+                userIsInTheMiddleOfTypingANumber = false
             }
             if operation == "M" {
                 brain.pushOperand(operation)
-                userIsInTheMiddleOfTypingANumber = false
             }
             
             updateDispVal(operation)
-            
             if operation != "π" && operation != "C"{
                 appendDispEquals()
             }
@@ -117,6 +115,12 @@ class ViewController: UIViewController {
             displayValue = result
         } else {
             displayValue = nil
+        }
+    }
+    
+    var errmsg: String? {
+        get {
+            return brain.evaluateAndReportErrors()
         }
     }
     
@@ -140,9 +144,10 @@ class ViewController: UIViewController {
         }
         set {
             if let num = newValue {
-                display.text = num == M_PI ? "π" : "\(num)"
+                let dispText = num == M_PI ? "π" : "\(num)"
+                display.text = errmsg ?? dispText
             } else {
-                display.text = " "
+                display.text = errmsg ?? "?"
             }
             
             userIsInTheMiddleOfTypingANumber = false
