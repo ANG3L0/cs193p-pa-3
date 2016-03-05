@@ -12,8 +12,8 @@ class CalculatorBrain {
     
     private enum Op: CustomStringConvertible {
         case Operand(Double)
-        case UnaryOperation(String, Double -> Double)
-        case BinaryOperation(String, (Double, Double) -> Double)
+        case UnaryOperation(String, Double -> Double, ((Double)->String?)?)
+        case BinaryOperation(String, (Double, Double) -> Double, ((Double,Double)->String?)?)
         case ClearOperation(String)
         case PiOperation(String)
         case Variable(String)
@@ -23,9 +23,9 @@ class CalculatorBrain {
                 switch self {
                 case .Operand(let operand):
                     return "\(operand)"
-                case .UnaryOperation(let symbol, _):
+                case .UnaryOperation(let symbol, _, _):
                     return symbol
-                case .BinaryOperation(let symbol, _ ):
+                case .BinaryOperation(let symbol, _, _):
                     return symbol
                 case .ClearOperation(let symbol):
                     return symbol
@@ -39,7 +39,7 @@ class CalculatorBrain {
         
         var precedence: Int {
             switch self {
-            case .BinaryOperation(let symbol, _):
+            case .BinaryOperation(let symbol, _, _):
                 switch symbol {
                 case "+": fallthrough
                 case "-":
@@ -227,10 +227,10 @@ class CalculatorBrain {
         return result
     }
 
-    func evaluateAndReportErrors() -> Double? {
+    func evaluateAndReportErrors() -> String? {
         let (result, remainder) = evaluate(opStack)
-        print("\(opStack) = \(result) with \(remainder) left over")
-        return result
+        let errmsg = ""
+        return errmsg
     }
     
     func pushOperand(operand: Double?) -> Double? {

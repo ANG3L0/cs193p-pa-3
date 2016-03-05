@@ -94,3 +94,5 @@ TBD
 
     Question 2: Why not have divides and multiply be of different precedence?  
     Answer: The common case like 1*2/4*3/5 or some continuous stream of multiply and divides would get screwed up.
+
+  * Currently, overflows and underflows are +/-inf.  Perhaps they should be special cased out in evaluateAndReportErrors???
