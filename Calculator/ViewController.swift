@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel! //implicit unwrapped optional
     @IBOutlet weak var opHistory: UILabel!
     
+    @IBOutlet weak var descriptionOperandHeight: NSLayoutConstraint!
     var userIsInTheMiddleOfTypingANumber = false
     var brain = CalculatorBrain()
 //    var freeze = false
@@ -40,6 +41,9 @@ class ViewController: UIViewController {
 
     @IBAction func valueManip(sender: UIButton) {
 //        if freeze { return }
+        
+        self.descriptionOperandHeight.constant = 16
+        
         let manipulator = sender.currentTitle!
         switch manipulator {
         case "⌫":
