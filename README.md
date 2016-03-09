@@ -21,6 +21,7 @@ Make a split-view graphing calculator.
 
 ## Pain points for this assignment AKA "stuff to learn"
 Here is a partial list of concepts this assignment is intended to let you gain practice with or otherwise demonstrate your knowledge of.
+
 1. Understanding MVC boundaries
 2. Creating a new subclass of UIViewController
 3. Universal Application (i.e. different UIs on iPad and iPhone in the same application) Split View Controller
@@ -38,15 +39,15 @@ Here is a partial list of concepts this assignment is intended to let you gain p
 ## Evaluation
 In all of the assignments this quarter, writing quality code that builds without warnings or errors, and then testing the resulting application and iterating until it functions properly is the goal.
 Here are the most common reasons assignments are marked down:
-• Project does not build.
-• Project does not build without warnings.
-• One or more items in the Required Tasks section was not satisfied.
-• Afundamentalconceptwasnotunderstood.
-• Code is visually sloppy and hard to read (e.g. indentation is not consistent, etc.).
-• Yoursolutionisdifficult(orimpossible)forsomeonereadingthecodeto understand due to lack of comments, poor variable/method names, poor solution structure, long methods, etc.
-• UI is a mess. Things should be lined up and appropriately spaced to “look nice.”
-• Public and private API is not properly delineated.
-Often students ask “how much commenting of my code do I need to do?” The answer is that your code must be easily and completely understandable by anyone reading it. You can assume that the reader knows the SDK, but should not assume that they already know the (or a) solution to the problem.
+
+  * Project does not build.
+  * Project does not build without warnings.
+  * One or more items in the Required Tasks section was not satisfied.
+  * Afundamentalconceptwasnotunderstood.
+  * Code is visually sloppy and hard to read (e.g. indentation is not consistent, etc.).
+  * Yoursolutionisdifficult(orimpossible)forsomeonereadingthecodeto understand due to lack of comments, poor variable/method names, poor solution structure, long methods, etc.
+  * UI is a mess. Things should be lined up and appropriately spaced to “look nice.”
+  * Public and private API is not properly delineated.
 
 
 ## Extra Credit
