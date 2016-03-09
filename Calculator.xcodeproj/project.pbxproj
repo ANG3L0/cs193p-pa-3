@@ -15,6 +15,7 @@
 		2F53CAB71C7B738E000A7F98 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F53CAB51C7B738E000A7F98 /* LaunchScreen.storyboard */; };
 		2F53CAC21C7B738E000A7F98 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F53CAC11C7B738E000A7F98 /* CalculatorTests.swift */; };
 		2F53CACD1C7B738E000A7F98 /* CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F53CACC1C7B738E000A7F98 /* CalculatorUITests.swift */; };
+		2FC55F501C8FE75D00A6A578 /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC55F4F1C8FE75D00A6A578 /* AxesDrawer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2F53CAC81C7B738E000A7F98 /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F53CACC1C7B738E000A7F98 /* CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITests.swift; sourceTree = "<group>"; };
 		2F53CACE1C7B738E000A7F98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FC55F4F1C8FE75D00A6A578 /* AxesDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxesDrawer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				2F513B841C8130D200C622CC /* CalculatorBrain.swift */,
 				2F53CAAE1C7B738E000A7F98 /* ViewController.swift */,
 				2F53CAB01C7B738E000A7F98 /* Main.storyboard */,
+				2FC55F4F1C8FE75D00A6A578 /* AxesDrawer.swift */,
 				2F53CAB31C7B738E000A7F98 /* Assets.xcassets */,
 				2F53CAAC1C7B738E000A7F98 /* AppDelegate.swift */,
 				2F53CAB51C7B738E000A7F98 /* LaunchScreen.storyboard */,
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F513B851C8130D200C622CC /* CalculatorBrain.swift in Sources */,
+				2FC55F501C8FE75D00A6A578 /* AxesDrawer.swift in Sources */,
 				2F53CAAF1C7B738E000A7F98 /* ViewController.swift in Sources */,
 				2F53CAAD1C7B738E000A7F98 /* AppDelegate.swift in Sources */,
 			);
