@@ -43,7 +43,7 @@ Here are the most common reasons assignments are marked down:
   * Project does not build.
   * Project does not build without warnings.
   * One or more items in the Required Tasks section was not satisfied.
-  * Afundamentalconceptwasnotunderstood.
+  * A fundamental concept was not understood.
   * Code is visually sloppy and hard to read (e.g. indentation is not consistent, etc.).
   * Yoursolutionisdifficult(orimpossible)forsomeonereadingthecodeto understand due to lack of comments, poor variable/method names, poor solution structure, long methods, etc.
   * UI is a mess. Things should be lined up and appropriately spaced to “look nice.”
