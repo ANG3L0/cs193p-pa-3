@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculatorViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel! //implicit unwrapped optional
     @IBOutlet weak var opHistory: UILabel!

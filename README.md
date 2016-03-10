@@ -5,7 +5,7 @@ Make a split-view graphing calculator.
 
 ## Main tasks
 1. [x] You must begin this assignment with your Assignment 2 code, not with any in-class demo code that has been posted. Learning to create new MVCs and segues requires experiencing it, not copy/pasting it or editing an existing storyboard that already has segues in it.
-2. [ ] Rename the ViewController class you’ve been working on in Assignments 1 and 2 to be CalculatorViewController.
+2. [x] Rename the ViewController class you’ve been working on in Assignments 1 and 2 to be CalculatorViewController.
 3. [ ] Add a new button to your calculator’s user-interface which, when touched, segues to a new MVC (that you will have to write) which graphs the program in the CalculatorBrain at the time the button was touched using the memory location M as the independent variable. For example, if the CalculatorBrain contains sin(M), you’d draw a sine wave. Subsequent input to the Calculator must have no effect on the graph (until the graphing button is touched again).
 4. [ ] Neither of your MVCs in this assignment is allowed to have CalculatorBrain appear anywhere in its non-private API.
 5. [ ] On iPad and in landscape on iPhone 6+ devices, the graph must be (or be able to be) on screen at the same time as your existing Calculator’s user-interface (i.e. in a split view). On other iPhones the graph should “push” onto the screen via a navigation controller.
