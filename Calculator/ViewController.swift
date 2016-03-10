@@ -42,8 +42,6 @@ class ViewController: UIViewController {
     @IBAction func valueManip(sender: UIButton) {
 //        if freeze { return }
         
-        self.descriptionOperandHeight.constant = 16
-        
         let manipulator = sender.currentTitle!
         switch manipulator {
         case "⌫":
