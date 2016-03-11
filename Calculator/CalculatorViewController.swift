@@ -18,6 +18,36 @@ class CalculatorViewController: UIViewController {
     var brain = CalculatorBrain()
 //    var freeze = false
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        var destination = segue.destinationViewController as? UIViewController
+        if let navCon = destination as? UINavigationController {
+            destination = navCon.visibleViewController
+        }
+        if let gvc = destination as? GraphViewController {
+            if let identifier = segue.identifier {
+                switch identifier {
+                case "Graph":
+                    gvc.program = brain.program
+                    if let titleString = opHistory.text {
+                        if titleString.containsString(",") {
+                            let titleStringArr = titleString.componentsSeparatedByString(",")
+                            gvc.title = titleStringArr[titleStringArr.count-1]
+                        } else {
+                            gvc.title = titleString == " " || titleString == "" ? "Nothing to graph!" : titleString
+                        }
+                    } else {
+                        gvc.title = "Nothing to graph!"
+                    }
+                    break
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+
+    
     @IBAction func appendDigit(sender: UIButton) {
 //        if freeze { return }
         let digit = sender.currentTitle!
@@ -41,7 +71,6 @@ class CalculatorViewController: UIViewController {
 
     @IBAction func valueManip(sender: UIButton) {
 //        if freeze { return }
-        
         let manipulator = sender.currentTitle!
         switch manipulator {
         case "⌫":
@@ -173,6 +202,11 @@ class CalculatorViewController: UIViewController {
         } else {
             displayValue = nil
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print ("view did load")
     }
 }
 
