@@ -15,7 +15,7 @@ class CalculatorViewController: UIViewController {
     
     @IBOutlet weak var descriptionOperandHeight: NSLayoutConstraint!
     var userIsInTheMiddleOfTypingANumber = false
-    var brain = CalculatorBrain()
+    private var brain = CalculatorBrain()
 //    var freeze = false
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -149,7 +149,7 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    var errmsg: String? {
+    private var errmsg: String? {
         get {
             return brain.evaluateAndReportErrors()
         }

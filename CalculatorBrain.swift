@@ -92,12 +92,16 @@ class CalculatorBrain {
             if let opSymbols = newValue as? Array<String> {
                 var newOpStack = [Op]()
                 for opSymbol in opSymbols {
+//                    print("opSymbol: \(opSymbol)")
                     if let op = knownOps[opSymbol] {
                         newOpStack.append(op)
+                    } else if opSymbol == "M"{
+                        newOpStack.append(Op.Variable(opSymbol, testVariableExistence))
                     } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
                         newOpStack.append(.Operand(operand))
                     }
                 }
+//                print("new Stack: \(newOpStack)")
                 opStack = newOpStack
             }
         }
@@ -267,7 +271,7 @@ class CalculatorBrain {
                 if let operand1 = op1Evaluation.result {
                     let op2Evaluation = evaluate(op1Evaluation.remainingOps)
                     if let operand2 = op2Evaluation.result {
-                        print("op1: \(operand1); op2: \(operand2)")
+//                        print("op1: \(operand1); op2: \(operand2)")
                         return (operation(operand1, operand2), op2Evaluation.remainingOps)
                     }
                 }
@@ -284,7 +288,7 @@ class CalculatorBrain {
     
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(opStack)
-        print("\(opStack) = \(result) with \(remainder) left over")
+ //       print("\(opStack) = \(result) with \(remainder) left over")
         return result
     }
 

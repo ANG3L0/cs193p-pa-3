@@ -69,7 +69,6 @@ class AxesDrawer
             } else {
                 unitsPerHashmark = floor(unitsPerHashmark)
             }
-
             let pointsPerHashmark = pointsPerUnit * unitsPerHashmark
             
             // figure out which is the closest set of hashmarks (radiating out from the origin) that are in bounds
